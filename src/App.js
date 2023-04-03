@@ -1,51 +1,44 @@
 import { useEffect, useState } from "react";
 import Day from "./Day";
 import CurrentDay from "./CurrentDay";
+import { APIkey } from "./APIkeys";
+import { toast } from "react-hot-toast";
 
 function App() {
-  const [city, setCity] = useState("paris");
+  const [city, setCity] = useState("London");
   const [currentWeather, setCurrentWeather] = useState(null);
   const [forecast, setForecast] = useState(null);
-  let finalData=[];
+  const [country,setCountry]=useState("UK");
+  const [loading,setLoading]=useState(true);
+  const [celcius,setCelcius]=useState(true);
 
-
-  // const APIkey = "061d9e2eb69720daf4505bd0a670886d";
-  // const units = "metric";
-  // const url= `api.openweathermap.org/data/2.5/forecast?q=${city}&units=${units}&appid=${APIkey}`
-  // const url= `https://api.weatherapi.com/v1/forecast.json?key=2fb459fe9b484d87994162528230204&q=London&days=5&aqi=no&alerts=no`
-
-  const fetchWeatherData = async () => {
-    const response = await fetch(
-      `https://api.weatherapi.com/v1/forecast.json?key=2fb459fe9b484d87994162528230204&q=London&days=5&aqi=no&alerts=no`,
-      {
-        "content-type": "application/json",
-      }
-    );
-    const weatherData = await response.json();
-    console.log(weatherData);
-    // console.log(typeof weatherData);
-    setForecast(weatherData.forecast.forecastday);
-    setCity(weatherData.location.name);
-    setCurrentWeather(weatherData.current);
+  const fetchWeatherData = async (city) => {
+    try {
+      const response = await fetch(
+        `https://api.weatherapi.com/v1/forecast.json?key=${APIkey}&q=${city}&days=5&aqi=no&alerts=no`,
+        {
+          "content-type": "application/json",
+        }
+      );
+      const weatherData = await response.json();
+      // console.log(weatherData);
+      // console.log(typeof weatherData);
+      setForecast(weatherData.forecast.forecastday);
+      setCity(weatherData.location.name);
+      setCurrentWeather(weatherData.current);
+      setCountry(weatherData.location.country);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      toast.error("we didn't find any city")
+      setLoading(false);
+    }
+    
     // console.log(forecast)
   };
 
-  // const fetchData=()=>{
-  //   return fetch(
-  //        `https://api.weatherapi.com/v1/forecast.json?key=2fb459fe9b484d87994162528230204&q=London&days=5&aqi=no&alerts=no`,
-  //      {
-  //         "content-type": "application/json",
-  //      }
-  //     )
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //       setForecast(data[forecast]);
-  //     });
-  // }
-
   useEffect(() => {
-    fetchWeatherData(city);
+    fetchWeatherData(city,APIkey);
   }, [city]);
   
   const searchCity=(e)=>{
@@ -54,8 +47,20 @@ function App() {
    {
     setCity(e.target.value);
     document.getElementById("search-bar").value="";
+    setLoading(true);
    }
      
+  }
+  if(loading)
+  {
+    return (
+      <div className="d-flex justify-content-center" style={{marginTop:"20rem"}}>
+      <div className="spinner-border" role="status">
+        <span className="visually-hidden align-self-baseline">Loading...</span>
+      </div>
+      </div>
+    )
+   
   }
   return (
     <div className="container">
@@ -65,30 +70,25 @@ function App() {
             type="text"
             id="search-bar"
             className="form-control shadow-none"
-            placeholder="Search.."
+            placeholder="Enter City.."
             onKeyDown={searchCity}
           />
-          <span className="input-group-text">
+          {/* <span className="input-group-text">
             <i className="fa-sharp fa-solid fa-magnifying-glass"></i>
-          </span>
+          </span> */}
         </div>
-        <button type="button" onClick={()=>{console.log(currentWeather)}} className="btn btn-primary m-3">
-          °C
+        <button type="button" onClick={()=>{setCelcius(celcius?false:true)}} className="btn btn-primary m-3">
+         {celcius?'°F':'°C'}
         </button>
       </div>
-      <h1 className="text-center m-3">{city}</h1>
+      <h1 className="text-center m-3">{city}, {country}</h1>
        <div className="d-flex justify-content-center  text-center">
-       {currentWeather && (<CurrentDay weather={currentWeather} />)}
+       {currentWeather && (<CurrentDay celcius={celcius} weather={currentWeather} />)}
        </div>
-      
+       <h1 className="text-center m-3">5-Day Forecast</h1>
       <div className="d-flex justify-content-around flex-wrap m-3">
-      {forecast && forecast.map((data)=>( <Day weather={data} />)
+      {forecast && forecast.map((data)=>( <Day key={`weather-${data.date_epoch}`} celcius={celcius} weather={data} />)
       )}
-        {/* <Day />
-        <Day />
-        <Day />
-        <Day />
-        <Day /> */}
       </div>
     </div>
   );

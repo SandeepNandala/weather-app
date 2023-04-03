@@ -1,6 +1,6 @@
 
 function Day(props) {
-  const {weather}=props;
+  const {weather,celcius}=props;
   // console.log(weather);
 
   return (
@@ -10,7 +10,7 @@ function Day(props) {
         {/* <h6 className="card-subtitle mb-2 text-body-secondary">03-04-2023</h6> */}
         <span className="d-inline-flex ">
             <img src={weather.day.condition.icon} alt="day.."/>
-            <h1 className="mx-5">{`${weather.day.avgtemp_c}`}°C</h1>
+            <h1 className="mx-5">{celcius?`${weather.day.avgtemp_c}°C`:`${weather.day.avgtemp_f}°F`}</h1>
         </span>
         <p className="card-text">
            {weather.day.condition.text}
