@@ -1,17 +1,19 @@
 
-function Day() {
+function Day(props) {
+  const {weather}=props;
+  // console.log(weather);
+
   return (
     <div className="card m-3" style={{ width:"18rem"}}>
       <div className="card-body">
-        <h5 className="card-title">Monday</h5>
-        <h6 className="card-subtitle mb-2 text-body-secondary">03-04-2023</h6>
+        <h5 className="card-title">{weather.date}</h5>
+        {/* <h6 className="card-subtitle mb-2 text-body-secondary">03-04-2023</h6> */}
         <span className="d-inline-flex ">
-            <img alt="day.."/>
-            <h1 className="mx-5">35°C</h1>
+            <img src={weather.day.condition.icon} alt="day.."/>
+            <h1 className="mx-5">{`${weather.day.avgtemp_c}`}°C</h1>
         </span>
         <p className="card-text">
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content.
+           {weather.day.condition.text}
         </p>
         
       </div>
