@@ -1,6 +1,13 @@
+body{
+  background: linear-gradient(to bottom, #2193b0, #6dd5ed);
+  font-family: 'Times New Roman', Times, serif;
+}
 i{
   cursor: pointer;
 }
 button{
   width: 50px;
+}
+.card{
+   background: linear-gradient(to left, #c9d6ff, #e2e2e2);
 }

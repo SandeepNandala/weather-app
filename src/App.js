@@ -21,8 +21,6 @@ function App() {
         }
       );
       const weatherData = await response.json();
-      // console.log(weatherData);
-      // console.log(typeof weatherData);
       setForecast(weatherData.forecast.forecastday);
       setCity(weatherData.location.name);
       setCurrentWeather(weatherData.current);
