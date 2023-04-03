@@ -1,6 +1,14 @@
 # Weather App using Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is about a weather app that allows users to search for a city and get current weather
+conditions, along with a five-day forecast.
+
+Technical Stack:
+React.js
+Bootstrap
+weather api https://www.weatherapi.com/   
+
+NOTE: login to https://www.weatherapi.com/ and generate your API key and paste it in src/APIKey/index.js file to get the API data 
 
 ## Available Scripts
 
