@@ -1,8 +1,11 @@
-# Getting Started with Create React App
+# Weather App using Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
+
+### `npm install`
+run the above command first to install all the required dependencies for the project
 
 In the project directory, you can run:
 
